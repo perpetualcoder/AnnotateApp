@@ -9,7 +9,7 @@ var options = {
   cert: cert
 };
 
-const port = 3000;
+const port = 443;
 const app = express();
 const db = require('./persistence');
 const getItems = require('./routes/getItems');
@@ -27,8 +27,9 @@ app.delete('/items/:id', deleteItem);
 
 var server = https.createServer(options, app);
 
+
 db.init().then(() => {
-    server.listen(port, () => console.log('Listening on port 3000'));
+    server.listen(port, () => console.log('Listening on port ', port));
 }).catch((err) => {
     console.error(err);
     process.exit(1);
