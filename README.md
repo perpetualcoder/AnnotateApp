@@ -1,2 +1,2 @@
 # AnnotateApp
-Annotation app
+This is an Annotation app
