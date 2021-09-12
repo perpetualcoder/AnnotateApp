@@ -1,4 +1,15 @@
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
+
+var key = fs.readFileSync('certs/selfsigned.key');
+var cert = fs.readFileSync('certs/selfsigned.crt');
+var options = {
+  key: key,
+  cert: cert
+};
+
+const port = 3000;
 const app = express();
 const db = require('./persistence');
 const getItems = require('./routes/getItems');
@@ -14,8 +25,10 @@ app.post('/items', addItem);
 app.put('/items/:id', updateItem);
 app.delete('/items/:id', deleteItem);
 
+var server = https.createServer(options, app);
+
 db.init().then(() => {
-    app.listen(3000, () => console.log('Listening on port 3000'));
+    server.listen(port, () => console.log('Listening on port 3000'));
 }).catch((err) => {
     console.error(err);
     process.exit(1);
